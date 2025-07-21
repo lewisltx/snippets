@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   v2ray:
     build:
@@ -41,7 +40,7 @@ services:
       - acme-sh-ssl:/etc/acme.sh/ssl
       - nginx-config:/etc/nginx/conf.d
       - ./conf/nginx.conf.template:/etc/nginx/templates/nginx.conf.template
-    depends_on: [v2ray, acme.sh]
+    depends_on: [v2ray, acme-sh]
     networks: [proxy]
     restart: unless-stopped
 

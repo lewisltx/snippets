@@ -1,6 +1,6 @@
 FROM v2fly/v2fly-core:v5.30.0
 
-COPY config/v2ray.json.template /etc/v2ray/template.json
+COPY conf/v2ray.json.template /etc/v2ray/template.json
 COPY scripts/v2ray-gen-config.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/v2ray-gen-config.sh
 

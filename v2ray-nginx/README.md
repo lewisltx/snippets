@@ -8,7 +8,7 @@ v2ray-nginx/
 ├── Dockerfile.v2ray            # V2Ray 镜像
 ├── scripts/
 │   ├── acme.sh-issue.sh        # 启动时申请证书
-│   └── v2ray-gen-config.sh     # 生成 v2ray config.json
+│   └── v2ray-gen-config.sh     # 生成 v2ray 配置
 └── conf/
     ├── nginx.conf.template     # nginx 配置模板
     └── v2ray.json.template     # v2ray 配置模板
@@ -18,7 +18,7 @@ v2ray-nginx/
 
 ```shell
 # 克隆仓库
-git clone https://github.com/lewisltx/snippets.git && cd v2ray-nginx
+git clone https://github.com/lewisltx/snippets.git && cd snippets/v2ray-nginx
 
 # 生成 .env
 cat > .env <<EOF
@@ -29,7 +29,7 @@ CF_Key=<key>
 EOF
 
 # 申请证书，仅需执行一次
-docker compose run --rm acme.sh issue.sh
+docker compose run acme-sh issue.sh
 
 # 启动所有服务
 docker-compose up -d --build
@@ -42,3 +42,10 @@ docker-compose up -d --build
 | 查看日志 | `docker-compose logs -f nginx`                           |
 | 更新镜像 | `docker-compose build --no-cache && docker-compose up -d` |
 | 手动续签 | `docker exec acme.sh acme.sh --renew`                    |
+
+## 命名卷
+
+- v2ray-config: v2ray 配置
+- nginx-config: nginx 配置
+- acme-sh-home: acme.sh 配置
+- acme-sh-ssl: HTTPS 证书
