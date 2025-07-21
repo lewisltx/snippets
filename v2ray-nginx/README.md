@@ -7,7 +7,7 @@ v2ray-nginx/
 ├── docker-compose.yml          # 一键启动
 ├── Dockerfile.v2ray            # V2Ray 镜像
 ├── scripts/
-│   ├── acme.sh-issue.sh        # 启动时申请证书
+│   ├── acme.sh-issue.sh        # 申请证书脚本
 │   └── v2ray-gen-config.sh     # 生成 v2ray 配置
 └── conf/
     ├── nginx.conf.template     # nginx 配置模板
