@@ -1,0 +1,55 @@
+version: "3.9"
+services:
+  v2ray:
+    build:
+      context: .
+      dockerfile: Dockerfile.v2ray
+    container_name: v2ray
+    environment:
+      VMESS_UUID: ${VMESS_UUID:-}
+    volumes:
+      - v2ray-config:/etc/v2ray
+    networks: [proxy]
+    restart: unless-stopped
+
+  acme-sh:
+    image: neilpang/acme.sh
+    container_name: acme.sh
+    command: daemon
+    volumes:
+      - ./scripts/acme.sh-issue.sh:/usr/local/bin/issue.sh
+      - /var/run/docker.sock:/var/run/docker.sock
+      - acme-sh-home:/acme.sh
+      - acme-sh-ssl:/etc/acme.sh/ssl
+    environment:
+      - DOMAIN=${DOMAIN:?err}
+      - CF_Email=${CF_Email:?err}
+      - CF_Key=${CF_Key:?err}
+      - DEPLOY_DOCKER_CONTAINER_LABEL=sh.acme.autoload.domain=${DOMAIN}
+      - DEPLOY_DOCKER_CONTAINER_RELOAD_CMD=“nginx -s reload”
+    networks: [ proxy ]
+    restart: unless-stopped
+
+  nginx:
+    image: docker.io/nginx:1.28-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN:?err}
+    volumes:
+      - acme-sh-ssl:/etc/acme.sh/ssl
+      - nginx-config:/etc/nginx/conf.d
+      - ./conf/nginx.conf.template:/etc/nginx/templates/nginx.conf.template
+    depends_on: [v2ray, acme.sh]
+    networks: [proxy]
+    restart: unless-stopped
+
+volumes:
+  v2ray-config:
+  nginx-config:
+  acme-sh-home:
+  acme-sh-ssl:
+
+networks:
+  proxy:

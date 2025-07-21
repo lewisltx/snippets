@@ -1,0 +1,25 @@
+{
+  "log": { "access": "/dev/null", "error": "/dev/null", "loglevel": "warning" },
+  "inbounds": [{
+      "port": 50808,
+      "listen": "0.0.0.0",
+      "protocol": "vmess",
+      "settings": {
+        "clients": [{ "id": "${VMESS_UUID}", "alterId": 0 }]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": { "path": "/vmess" }
+      }
+  }],
+  "outbounds": [{ "protocol": "freedom" }],
+  "dns": {
+    "servers": [
+      "https://dns.google/dns-query",
+      "https://cloudflare-dns.com/dns-query"
+    ]
+  },
+  "routing": {
+    "rules": [{ "type": "field", "ip": ["geoip:private"], "outboundTag": "blocked" }]
+  }
+}
