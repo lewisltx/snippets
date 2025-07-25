@@ -153,7 +153,7 @@ check_status "SSL certificate installation"
 echo "Configuring Nginx reverse proxy..."
 
 # fix nginx 1.25.0 http2 direction
-NGINX_VERSION=$(nginx -v 2>&1 | grep -Eo '\d+\.\d+\.\d+')
+NGINX_VERSION=$(nginx -v 2>&1 | grep -Po '\d+\.\d+\.\d+')
 if [[ "$(printf '%s\n' "$NGINX_VERSION" "1.25.0" | sort -V | head -n1)" == "1.25.0" ]]; then
     NGINX_SSL_LISTEN="listen 443 ssl; listen [::]:443 ssl; http2 on;"
 else
